@@ -1,0 +1,80 @@
+CREATE DATABASE CodeAcademy
+USE CodeAcademy
+
+
+CREATE TABLE GroupTypes(
+	Id INT IDENTITY(1,1) PRIMARY KEY NOT NULL ,
+	Name NVARCHAR(50) NOT NULL,
+)
+
+INSERT INTO GroupTypes VALUES ('Design')
+INSERT INTO GroupTypes VALUES ('Programming')
+
+
+CREATE TABLE ExerciseTypes(
+	Id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	Name NVARCHAR(50) NOT NULL,
+)
+
+INSERT INTO ExerciseTypes VALUES ('Homework')
+INSERT INTO ExerciseTypes VALUES ('Quiz')
+INSERT INTO ExerciseTypes VALUES ('Final Project')
+
+CREATE TABLE Groups(
+	Id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	Name NVARCHAR(50) NOT NULL,
+	BeginDate DATE,
+	EndDate DATE,
+	LessonHours INT,
+	GroupTypeId INT FOREIGN KEY REFERENCES GroupTypes(Id)
+)
+
+INSERT INTO Groups VALUES ('PB401' , '2010-5-12' , '2012-12-12' , 300 , 2)
+INSERT INTO Groups VALUES ('DB301' , '2020-5-12' , '2022-12-12' , 100 , 1)
+
+CREATE TABLE Students(
+	Id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	Name NVARCHAR(50) NOT NULL,
+	Surname NVARCHAR(50) NOT NULL,
+	BirthDate Date NOT NULL,
+	RegistrationDate DATE NOT NULL,
+	PhoneNumber NVARCHAR(15) UNIQUE NOT NULL,
+	Email NVARCHAR(50) UNIQUE NOT NULL,
+	GroupId INT FOREIGN KEY REFERENCES Groups(Id)
+)
+
+INSERT INTO Students VALUES ('Aghasalim' ,'Agharahimov' , '2005-10-23' , '2010-01-01' , '0515900036' , 'agarahimovagasi@gmail.com' , 1 )
+INSERT INTO Students VALUES ('aaaaaaaaa' ,'Agharahimov' , '2006-10-23' , '2020-01-01' , '0515900023' , 'agarahimovagasi3@gmail.com' , 2 )
+
+CREATE TABLE Topics (
+	Id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	Name NVARCHAR(50) NOT NULL,
+	LessonHours INT NOT NULL,
+	GroupTypeId INT FOREIGN KEY REFERENCES GroupTypes(Id)
+)
+
+INSERT INTO Topics VALUES ('CSHARP' , 100 , 2)
+INSERT INTO Topics VALUES ('SQL' , 10 , 2)
+INSERT INTO Topics VALUES ('ALGO' , 19 , 2)
+INSERT INTO Topics VALUES ('ADOBE' , 100 , 1)
+INSERT INTO Topics VALUES ('AUTOCAD' , 100 , 1)
+
+CREATE TABLE Exercises (
+	Id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	Name NVARCHAR(50) NOT NULL,
+	Grade Decimal(5,2),
+	ExerciseTypeId INT FOREIGN KEY REFERENCES ExerciseTypes(Id),
+	TopicId INT FOREIGN KEY REFERENCES Topics(Id),
+	StudentId INT FOREIGN KEY REFERENCES Students(Id)
+)
+
+INSERT INTO Exercises VALUES ('hw1' , '98.24' , 1, 1 ,1)
+INSERT INTO Exercises VALUES ('hw2' , '98.24' , 2, 3, 1)
+INSERT INTO Exercises VALUES ('hw3' , '98.24' , 3, 3, 2)
+
+SELECT * FROM Students
+SELECT * FROM Groups
+SELECT * FROM GroupTypes
+SELECT * FROM Topics
+SELECT * FROM Exercises
+SELECT * FROM ExerciseTypes

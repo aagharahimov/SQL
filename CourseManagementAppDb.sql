@@ -1,0 +1,32 @@
+CREATE DATABASE CourseManagementAppDb
+USE CourseManagementAppDb
+
+CREATE TABLE Students (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	Name NVARCHAR(50) NOT NULL,
+	Surname NVARCHAR(50) NOT NULL,
+	BirthDate DATE NOT NULL CHECK(BirthDate <= DATEADD(YEAR, -18, GETDATE())),
+    RegistrationDate DATE DEFAULT(GETDATE())
+)
+
+CREATE TABLE CourseTypes (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	Name NVARCHAR(50) NOT NULL UNIQUE
+)
+
+CREATE TABLE Courses (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	Name NVARCHAR(50) NOT NULL UNIQUE,
+	CourseTypeId INT FOREIGN KEY REFERENCES CourseTypes(Id)
+)
+
+CREATE TABLE StudentCourses(
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	StudentId INT FOREIGN KEY REFERENCES Students(Id),
+	CourseId INT FOREIGN KEY REFERENCES Courses(Id)
+)
+
+INSERT INTO Students (Name, Surname, BirthDate, )
+VALUES('Zaur', 'Huseynov', '2005-09-27')
+
+SELECT * FROM Students

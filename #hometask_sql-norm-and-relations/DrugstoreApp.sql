@@ -1,0 +1,51 @@
+CREATE DATABASE DrugstoreApp
+USE DrugstoreApp
+
+CREATE TABLE Owners(
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	[Name] NVARCHAR(50) NOT NULL,
+	Surname NVARCHAR(50) NOT NULL
+)
+
+CREATE TABLE Drugstores (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	[Name] NVARCHAR(50) NOT NULL,
+	Address NVARCHAR(50) NOT NULL,
+	ContactNumber NVARCHAR(50) NOT NULL,
+	CreationDate DATETIME DEFAULT CURRENT_TIMESTAMP, CHECK (CreationDate <= CURRENT_TIMESTAMP),
+	OwnerId INT FOREIGN KEY REFERENCES Owners(Id)
+)
+
+CREATE TABLE Druggists (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	[Name] NVARCHAR(50) NOT NULL,
+	Surname NVARCHAR(50) NOT NULL,
+	BirthDate DATE,
+	CONSTRAINT CHK_Age CHECK (DATEDIFF(YEAR, BirthDate, GETDATE()) >= 18),
+	DrugstoreId INT FOREIGN KEY REFERENCES Drugstores(Id)
+)
+
+CREATE TABLE Drugs (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	[Name] NVARCHAR(50) NOT NULL,
+	Price DECIMAL,
+	[Count] INT,
+	DrugstoreId INT FOREIGN KEY REFERENCES Drugstores(Id)
+)
+
+INSERT INTO Owners
+VALUES ('Agasi' , 'Agarahimov')
+
+INSERT INTO Drugstores
+VALUES ('AgasiAptek' , 'Bineqedi' , '+994515900036' , '2023-10-23' , 1)
+
+INSERT INTO Druggists
+VALUES ('BEEP' , 'BeePov' , '2004-10-23' , 1)
+
+INSERT INTO Drugs
+VALUES ('Fentanyl' , 30.20 , 5 , 1)
+
+SELECT * FROM Owners
+SELECT * FROM Drugstores
+SELECT * FROM Druggists
+SELECT * FROM Drugs
