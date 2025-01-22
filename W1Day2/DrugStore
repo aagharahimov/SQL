@@ -1,0 +1,50 @@
+CREATE DATABASE DrugstoreApp;
+USE DrugstoreApp;
+CREATE TABLE Owners (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(50),
+    Surname NVARCHAR(50)
+);
+
+CREATE TABLE Drugstores (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	[Name] NVARCHAR(50) NOT NULL,
+	Address NVARCHAR(50) NOT NULL,
+	ContactNumber NVARCHAR(50) NOT NULL,
+	CreationDate DATETIME DEFAULT CURRENT_TIMESTAMP, CHECK (CreationDate <= CURRENT_TIMESTAMP),
+	OwnerId INT FOREIGN KEY REFERENCES Owners(Id)
+)
+
+CREATE TABLE Druggists (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	[Name] NVARCHAR(50) NOT NULL,
+	Surname NVARCHAR(50) NOT NULL,
+	BirthDate DATE,
+	CONSTRAINT Check_Age CHECK (DATEDIFF(YEAR, BirthDate, GETDATE()) >= 18),
+	DrugstoreId INT FOREIGN KEY REFERENCES Drugstores(Id)
+)
+
+CREATE TABLE Drugs (
+	Id INT PRIMARY KEY IDENTITY(1,1),
+	Name NVARCHAR(50) NOT NULL,
+	Price DECIMAL,
+	Count INT,
+	DrugstoreId INT FOREIGN KEY REFERENCES Drugstores(Id)
+)
+
+INSERT INTO Owners
+VALUES ('Agasi' , 'Agarahimov')
+
+INSERT INTO Drugstores
+VALUES ('Aptek' , 'Bineqedi' , '+994515900036' , '2023-10-23' , 1)
+
+INSERT INTO Druggists
+VALUES ('agaselim' , 'agaselimov' , '2006-10-23' , 1)
+
+INSERT INTO Drugs
+VALUES ('derman' , 40.5 , 4 , 1)
+
+SELECT * FROM Owners
+SELECT * FROM Drugstores
+SELECT * FROM Druggists
+SELECT * FROM Drugs
